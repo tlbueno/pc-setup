@@ -1,0 +1,165 @@
+# 002-install-packages.yml
+---
+- name: Install packages tasks
+  block:
+    - name: Install additional repos keys
+      rpm_key:
+        key: "{{ item }}" 
+        state: present
+      become: true
+      with_items:
+        - https://packages.microsoft.com/keys/microsoft.asc
+        - https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+        - https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+
+    - name: Install additional repos packages
+      dnf:
+        state: latest
+        name:
+          - fedora-workstation-repositories
+          - 'https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm'
+          - 'https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm'
+      become: true
+
+    - name: Add VS Code repo
+      yum_repository:
+        name: vscode
+        description: Visual Studio Code
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: true
+        gpgcheck: true
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+      become: true
+
+    - name: Add additional repos
+      get_url:
+        url: "{{ item.repo_file_url }}"
+        dest: "/etc/yum.repos.d/{{ item.repo_filename }}"
+      with_items:
+        - { repo_file_url: "https://cli.github.com/packages/rpm/gh-cli.repo", repo_filename: "gh-cli.repo" }
+      become: true
+
+    - name: Enable google-chrome repo
+      shell: |
+        set -o pipefail && \
+        dnf config-manager --set-enabled google-chrome
+      become: true
+
+    - name: Update package groups
+      shell: |
+        set -o pipefail && \
+        dnf groupupdate --assumeyes core multimedia && \
+        dnf group upgrade --assumeyes --with-optional core multimedia
+      become: true
+
+    - name: Upgrade all packages
+      dnf:
+        state: latest
+        name: "*"
+      become: true
+
+    - name: Install packages
+      dnf:
+        state: latest
+        name:
+          - buildah
+          - bzip2
+          - code
+          - curl
+          - did
+          - gcc
+          - gh
+          - git-crypt
+          - gnome-shell-extension-system-monitor-applet
+          - gnome-shell-extension-user-theme
+          - gnome-tweaks
+          - gocomplete
+          - golang
+          - google-chrome-stable
+          - gstreamer1-plugins-bad-free-extras
+          - gstreamer1-plugins-good-extras
+          - gstreamer1-plugin-openh264
+          - htop
+          - httpie
+          - java-1.8.0-openjdk
+          - java-1.8.0-openjdk-devel
+          - java-1.8.0-openjdk-javadoc
+          - java-1.8.0-openjdk-src
+          - java-11-openjdk
+          - java-11-openjdk-devel
+          - java-11-openjdk-javadoc
+          - java-11-openjdk-jmods
+          - java-11-openjdk-src
+          - jq
+          - krb5-workstation
+          - lftp
+          - lxappearance
+          - make
+          - maven
+          - mozilla-openh264
+          - msmtp
+          - ncdu
+          - neofetch
+          - nmap
+          - nodejs
+          - npm
+          - openldap-clients
+          - origin-clients
+          - pass
+          - pinta
+          - pipenv
+          - podman
+          - podman-docker
+          - python3-ansible-lint
+          - python3-devel
+          - python3-google-api-client
+          - python3-junit_xml
+          - python3-openstackclient
+          - python3-virtualenvwrapper
+          - seahorse
+          - ShellCheck
+          - skopeo
+          - telnet
+          - terminator
+          - tmux
+          - toolbox
+          - unzip
+          - vim-enhanced
+          - wget
+          - xclip
+      become: true
+
+    - name: Install vitualisation package group
+      shell: |
+        set -o pipefail && \
+        dnf group install --assumeyes --with-optional virtualisation
+      become: true
+
+    - name: Install packages (without pgp check)
+      dnf:
+        state: latest
+        disable_gpg_check: true
+        name:
+          - 'https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm'
+      become: true
+
+    - name: Autoremove unneeded packages installed as dependencies
+      dnf:
+        autoremove: true
+      become: true
+
+    - name: Clean package manager cache
+      shell: |
+        set -o pipefail && \
+        dnf clean all
+      args:
+        warn: false
+      become: true
+
+    - name: Install nodejs packages
+      npm:
+        state: latest
+        global: yes
+        name: junit-merge
+      become: true
+  tags: install-packages

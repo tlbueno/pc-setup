@@ -1,0 +1,59 @@
+# 004-install-apps.yml
+---
+- name: Install apps tasks
+  block:
+    - name: Set install-apps tasks variables
+      set_fact:
+        apps_dir: "{{ home_dir }}/apps"
+        apps_hash:
+          - { name: "crc",
+              artifact: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz",
+              checksum_algorithm: "sha256",
+              checksum_file: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/latest/sha256sum.txt",
+            }
+          - { name: "groovy",
+              artifact: "https://downloads.apache.org/groovy/3.0.7/distribution/apache-groovy-sdk-3.0.7.zip",
+              checksum_algorithm: "sha256",
+              checksum_file: "https://downloads.apache.org/groovy/3.0.7/distribution/apache-groovy-sdk-3.0.7.zip.sha256"
+            }
+          - { name: "idea",
+              artifact: "https://download.jetbrains.com/idea/ideaIC-2020.3.3.tar.gz",
+              checksum_algorithm: "sha256",
+              checksum_file: "https://download.jetbrains.com/idea/ideaIC-2020.3.3.tar.gz.sha256",
+            }
+          - { name: "minikube",
+              artifact: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64",
+              checksum_algorithm: "sha256",
+              checksum_file: "",
+            }
+          - { name: "packer",
+              artifact: "https://releases.hashicorp.com/packer/1.7.0/packer_1.7.0_linux_amd64.zip",
+              checksum_algorithm: "sha256",
+              checksum_file: "https://releases.hashicorp.com/packer/1.7.0/packer_1.7.0_SHA256SUMS",
+            }
+          - { name: "sonar-scanner",
+              artifact: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.0.2311-linux.zip",
+              checksum_algorithm: "sha256",
+              checksum_file: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.0.2311-linux.zip.sha256"
+            }
+
+    - name: Create apps directory
+      file:
+        path: "{{ apps_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: Get apps
+      include_tasks: 004-install-apps-subtask.yml
+      with_items:
+        - "{{ apps_hash }}"
+  tags: install-apps
+
+    # activemq-artemis
+    # go-jira
+    # goss
+    # jd-gui
+    # jmxterm
+
+    # amq-broker (internal)
+    # jenkins-cli (internal)

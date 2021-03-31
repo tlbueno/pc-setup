@@ -1,0 +1,23 @@
+# 000-playbook.yml
+---
+- hosts: all
+  gather_facts: true
+
+  vars:
+    tb_hostname: "{{ lookup('env', 'TB_HOSTNAME') }}"
+    home_dir: "{{ lookup('env', 'HOME') }}"
+
+  tasks:
+    - name: Execute tasks
+      include_tasks: "{{ task_file }}"
+      loop:
+        - 001-set-hostname.yml
+        - 002-install-packages.yml
+        - 003-gnome.yml
+        - 004-install-apps.yml
+        - 005-repos.yml
+      loop_control:
+        loop_var: task_file
+      tags: 
+        - always
+

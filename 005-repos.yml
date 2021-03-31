@@ -1,0 +1,50 @@
+# 005-repos.yml
+---
+- name: Repos tasks
+  block:
+    - name: Set repos tasks variables
+      set_fact:
+        dev_dir: "{{ home_dir }}/dev"
+        repos_list:
+          - "git@github.com:apache/activemq-artemis-native.git"
+          - "git@github.com:apache/activemq-artemis.git"
+          - "git@github.com:artemiscloud/activemq-artemis-broker-image.git"
+          - "git@github.com:artemiscloud/activemq-artemis-broker-init-image.git"
+          - "git@github.com:artemiscloud/activemq-artemis-broker-kubernetes-image.git"
+          - "git@github.com:artemiscloud/activemq-artemis-operator-bundle.git"
+          - "git@github.com:artemiscloud/activemq-artemis-operator-test-suite.git"
+          - "git@github.com:artemiscloud/activemq-artemis-operator.git"
+          - "git@github.com:artemiscloud/artemiscloud-docs.git"
+          - "git@github.com:artemiscloud/artemiscloud-examples.git"
+          - "git@github.com:artemiscloud/artemiscloud.github.io.git"
+          - "git@github.com:artemiscloud/grafana.git"
+          - "git@github.com:artemiscloud/website.git"
+          - "git@github.com:jboss-openshift/application-templates.git"
+          - "git@github.com:magicmonty/bash-git-prompt.git"
+          - "git@github.com:rh-messaging/artemis-prometheus-metrics-plugin.git"
+          - "git@github.com:rh-messaging/cli-java.git"
+          - "git@github.com:rh-messaging/shipshape.git"
+          - "git@github.com:tlbueno/pc-setup.git"
+
+    - name: Create dev directory
+      file:
+        path: "{{ dev_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: Create repos directory
+      file:
+        path: "{{ dev_dir }}/{{ item | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - "{{ repos_list }}"
+
+    - name: Checkout repo
+      git:
+        repo: "{{ item }}"
+        dest: "{{ dev_dir }}/{{ item | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
+        accept_hostkey: true
+      with_items:
+        - "{{ repos_list }}"
+  tags: repos

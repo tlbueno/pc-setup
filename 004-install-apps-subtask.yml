@@ -1,0 +1,19 @@
+# 004-install-apps-subtask.yml
+---
+- name: "{{ item.name }} - Create app directory"
+  file:
+    path: "{{ apps_dir }}/{{ item.name }}"
+    state: directory
+    mode: 0755
+
+- name: "{{ item.name }} - Check if app artifact already exist"
+  stat:
+    path: "{{ apps_dir }}/{{ item.name }}/{{ item.artifact | basename }}"
+    checksum_algorithm: "{{ item.checksum_algorithm }}"
+  register: app_file_stat
+
+- name: "{{ item.name }} - Download app"
+  get_url:
+    url: "{{ item.artifact }}"
+    dest: "{{ apps_dir }}/{{ item.name }}"
+  when: not app_file_stat.stat.exists

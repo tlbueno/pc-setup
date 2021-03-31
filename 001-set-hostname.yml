@@ -1,0 +1,26 @@
+# 001-set-hostname.yml
+---
+- name: set hostname tasks
+  block:
+    - name: Set hostname
+      shell: |
+        set -o pipefail && \
+        hostnamectl --{{ item }} set-hostname {{ tb_hostname }}
+      become: true
+      loop:
+        - transient
+        - static
+        - pretty
+
+    - name: Ensure hostname is set
+      shell: |
+        set -o pipefail && \
+        hostnamectl --{{ item }} status
+      register: hostname_output
+      loop:
+        - transient
+        - static
+        - pretty
+      failed_when:
+        - '"{{ tb_hostname }}" not in hostname_output.stdout'
+  tags: set-hostname

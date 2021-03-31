@@ -1,0 +1,129 @@
+# 003-gnome.yml
+---
+- name: Gnome tasks
+  block:
+    - name: Set install-apps tasks variables
+      set_fact:
+        themes_dir: "{{ home_dir }}/.themes"
+
+    - name: Create user themes directory
+      file:
+        path: "{{ themes_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: Unarchive gnome theme
+      unarchive:
+        src: files/gnome-theme/1511731353-Minwaita-OSX.tar.gz
+        dest: "{{ themes_dir }}"
+
+    - name: Disable notifications on lock screen
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.notifications show-in-lock-screen false
+
+    - name: Set blank screen delay to 600s
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.session idle-delay 600
+
+    - name: Disable idle dim
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.settings-daemon.plugins.power idle-dim false 
+
+    - name: Set sleep on battery timeout to 3600s
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 3600 
+
+    - name: Set mouse to left handed
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.peripherals.mouse left-handed true
+
+    - name: Disable touchpad natural scroll
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+
+    - name: Set touchpad tap to click
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+
+    - name: Set never prompt or start programs on media insertion
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.media-handling autorun-never true
+
+    - name: Set keybindings
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Super>Tab']" &&
+        gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']" &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']" &&
+        gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']" &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys www "['<Super>b']" &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "[]" &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']" &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'terminator' &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Terminal' &&
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super>t'
+
+    - name: Show weekday on clock
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.interface clock-show-weekday true
+
+    - name: Show weekday on clock
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.calendar show-weekdate true
+
+    - name: Set toolbar icons to small
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.interface toolbar-icons-size 'small'
+
+    - name: Disable hot corners
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.interface enable-hot-corners false
+
+    - name: Set sound above 100%
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.sound allow-volume-above-100-percent true
+
+    - name: Set display antialiasing as subpixel
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba' 
+
+    - name: Set window close button to left
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.wm.preferences button-layout 'close:appmenu'
+
+    - name: Set center new window
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.mutter center-new-windows true 
+
+    - name: Set theme
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.desktop.interface gtk-theme 'Minwaita-OSX-Dark' &&
+        gsettings set org.gnome.shell.extensions.user-theme name 'Minwaita-OSX'
+
+    - name: Set world clocks
+      shell: |
+        set -o pipefail &&
+        gsettings set org.gnome.clocks world-clocks "[{'location': <(uint32 2, <('Raleigh', 'KRDU', true, [(0.62605930672100707, -1.3750818938070426)], [(0.62434085553949348, -1.3725027509582006)])>)>}, {'location': <(uint32 2, <('Brno', 'LKTB', true, [(0.857829327355213, 0.291469985083053)], [(0.85870199198121022, 0.29030642643062599)])>)>}, {'location': <(uint32 2, <('Beijing', 'ZBAA', true, [(0.69696814214530467, 2.0295270260429752)], [(0.69689057971334611, 2.0313596217575696)])>)>}]"
+
+    - name: Set world clocks
+      shell: |
+        set -o pipefail &&
+        gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
+  tags: gnome
