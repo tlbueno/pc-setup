@@ -2,7 +2,7 @@
 ---
 - name: Gnome tasks
   block:
-    - name: Set install-apps tasks variables
+    - name: Set gnome tasks variables
       set_fact:
         themes_dir: "{{ home_dir }}/.themes"
 

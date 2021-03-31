@@ -16,8 +16,8 @@
         - 003-gnome.yml
         - 004-install-apps.yml
         - 005-repos.yml
+        - 006-golang.yml
       loop_control:
         loop_var: task_file
       tags: 
         - always
-

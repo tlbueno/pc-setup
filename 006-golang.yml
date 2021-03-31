@@ -1,0 +1,14 @@
+# 006-go.yml
+---
+- name: Golang tasks
+  block:
+    - name: Get go tools
+      shell: |
+        set -o pipefail && \
+        go get -u {{ item }}
+      with_items:
+        - "github.com/onsi/ginkgo/ginkgo"
+
+  environment:
+    GOPATH: "{{ home_dir }}/dev/golang"
+  tags: golang
