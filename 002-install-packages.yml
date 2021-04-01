@@ -73,8 +73,6 @@
           - gnome-shell-extension-system-monitor-applet
           - gnome-shell-extension-user-theme
           - gnome-tweaks
-          - gocomplete
-          - golang
           - google-chrome-stable
           - gstreamer1-plugins-bad-free-extras
           - gstreamer1-plugins-good-extras

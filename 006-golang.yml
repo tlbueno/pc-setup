@@ -5,10 +5,17 @@
     - name: Get go tools
       shell: |
         set -o pipefail && \
-        go get -u {{ item }}
+        go get {{ item }}
       with_items:
+        - "github.com/go-delve/delve/cmd/dlv"
         - "github.com/onsi/ginkgo/ginkgo"
+        - "github.com/posener/complete/gocomplete"
+        - "github.com/ramya-rao-a/go-outline"
+        - "github.com/uudashr/gopkgs/v2/cmd/gopkgs"
+        - "golang.org/x/tools/gopls"
+        - "honnef.co/go/tools/cmd/staticcheck"
 
   environment:
     GOPATH: "{{ home_dir }}/dev/golang"
   tags: golang
+
