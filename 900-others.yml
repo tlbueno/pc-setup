@@ -1,0 +1,17 @@
+# 900-others.yml
+---
+- name: Others tasks
+  block:
+    - name: Copy sysctl fs.inotify.max_user_watches files
+      copy:
+        src: files/sysctl-file-watches.conf
+        dest: /etc/sysctl.d/00-file-watches.conf
+        mode: 0644
+      become: true
+    
+    - name: Set sysctl fs.inotify.max_user_watches
+      shell: |
+        set -o pipefail && \
+        sysctl --system
+      become: true
+  tags: others

@@ -1,4 +1,4 @@
-# 003-gnome.yml
+# 300-gnome.yml
 ---
 - name: Gnome tasks
   block:

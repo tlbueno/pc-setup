@@ -1,4 +1,4 @@
-# 004-install-apps.yml
+# 400-install-apps.yml
 ---
 - name: Install apps tasks
   block:
@@ -49,7 +49,7 @@
         mode: 0755
 
     - name: Get apps
-      include_tasks: 004-install-apps-subtask.yml
+      include_tasks: 401-install-apps-subtask.yml
       with_items:
         - "{{ apps_hash }}"
   tags: install-apps

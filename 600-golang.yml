@@ -1,4 +1,4 @@
-# 006-go.yml
+# 600-go.yml
 ---
 - name: Golang tasks
   block:
@@ -14,7 +14,6 @@
         - "github.com/uudashr/gopkgs/v2/cmd/gopkgs"
         - "golang.org/x/tools/gopls"
         - "honnef.co/go/tools/cmd/staticcheck"
-
   environment:
     GOPATH: "{{ home_dir }}/dev/golang"
   tags: golang

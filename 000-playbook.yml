@@ -11,12 +11,13 @@
     - name: Execute tasks
       include_tasks: "{{ task_file }}"
       loop:
-        - 001-set-hostname.yml
-        - 002-install-packages.yml
-        - 003-gnome.yml
-        - 004-install-apps.yml
-        - 005-repos.yml
-        - 006-golang.yml
+        - 100-set-hostname.yml
+        - 200-install-packages.yml
+        - 300-gnome.yml
+        - 400-install-apps.yml
+        - 500-repos.yml
+        - 600-golang.yml
+        - 900-others.yml
       loop_control:
         loop_var: task_file
       tags: 

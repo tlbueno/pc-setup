@@ -1,4 +1,4 @@
-# 001-set-hostname.yml
+# 100-set-hostname.yml
 ---
 - name: set hostname tasks
   block:
