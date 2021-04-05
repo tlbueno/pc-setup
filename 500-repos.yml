@@ -25,6 +25,7 @@
           - "git@github.com:rh-messaging/cli-java.git"
           - "git@github.com:rh-messaging/shipshape.git"
           - "git@github.com:tlbueno/pc-setup.git"
+          - "git@github.com:tlbueno/tools.git"
 
     - name: Create dev directory
       file:
