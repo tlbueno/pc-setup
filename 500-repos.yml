@@ -6,26 +6,90 @@
       set_fact:
         dev_dir: "{{ home_dir }}/dev"
         repos_list:
-          - "git@github.com:apache/activemq-artemis-native.git"
-          - "git@github.com:apache/activemq-artemis.git"
-          - "git@github.com:artemiscloud/activemq-artemis-broker-image.git"
-          - "git@github.com:artemiscloud/activemq-artemis-broker-init-image.git"
-          - "git@github.com:artemiscloud/activemq-artemis-broker-kubernetes-image.git"
-          - "git@github.com:artemiscloud/activemq-artemis-operator-bundle.git"
-          - "git@github.com:artemiscloud/activemq-artemis-operator-test-suite.git"
-          - "git@github.com:artemiscloud/activemq-artemis-operator.git"
-          - "git@github.com:artemiscloud/artemiscloud-docs.git"
-          - "git@github.com:artemiscloud/artemiscloud-examples.git"
-          - "git@github.com:artemiscloud/artemiscloud.github.io.git"
-          - "git@github.com:artemiscloud/grafana.git"
-          - "git@github.com:artemiscloud/website.git"
-          - "git@github.com:jboss-openshift/application-templates.git"
-          - "git@github.com:magicmonty/bash-git-prompt.git"
-          - "git@github.com:rh-messaging/artemis-prometheus-metrics-plugin.git"
-          - "git@github.com:rh-messaging/cli-java.git"
-          - "git@github.com:rh-messaging/shipshape.git"
-          - "git@github.com:tlbueno/pc-setup.git"
-          - "git@github.com:tlbueno/tools.git"
+          - { repo: "git@github.com:apache/activemq-artemis-native.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:apache/activemq-artemis.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-broker-image.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-broker-init-image.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-broker-kubernetes-image.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-operator-bundle.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-operator-test-suite.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/activemq-artemis-operator.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/artemiscloud-docs.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/artemiscloud-examples.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/artemiscloud.github.io.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/grafana.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:artemiscloud/website.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:jboss-openshift/application-templates.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:magicmonty/bash-git-prompt.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:rh-messaging/artemis-prometheus-metrics-plugin.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:rh-messaging/cli-java.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:rh-messaging/shipshape.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:tlbueno/activemq-artemis.git", 
+              additional_remote_name: "upstream", 
+              additional_remote_repo: "https://github.com/apache/activemq-artemis"
+            }
+          - { repo: "git@github.com:tlbueno/pc-setup.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
+          - { repo: "git@github.com:tlbueno/tools.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
 
     - name: Create dev directory
       file:
@@ -35,7 +99,7 @@
 
     - name: Create repos directory
       file:
-        path: "{{ dev_dir }}/{{ item | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
+        path: "{{ dev_dir }}/{{ item.repo | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
         state: directory
         mode: 0755
       with_items:
@@ -43,9 +107,19 @@
 
     - name: Checkout repo
       git:
-        repo: "{{ item }}"
-        dest: "{{ dev_dir }}/{{ item | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
+        repo: "{{ item.repo }}"
+        dest: "{{ dev_dir }}/{{ item.repo | regex_replace('^.*@(.*):(.*).git$', '\\1/\\2') }}"
         accept_hostkey: true
+      with_items:
+        - "{{ repos_list }}"
+      ignore_errors: yes
+
+    - name: add additional remote repo
+      shell: |
+        set -o pipefail && \
+        cd {{ dev_dir }}/{{ item.repo | regex_replace('^.*@(.*):(.*).git$', '\1/\2') }} && \
+        git remote add {{ item.additional_remote_name }} {{ item.additional_remote_repo }}
+      when: item.additional_remote_name and item.additional_remote_repo
       with_items:
         - "{{ repos_list }}"
   tags: repos
