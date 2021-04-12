@@ -12,7 +12,7 @@
               checksum_file: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/latest/sha256sum.txt",
             }
           - { name: "eclipse",
-              artifact: "https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2021-03/R/eclipse-jee-2021-03-R-linux-gtk-x86_64.tar.gz&r=1",
+              artifact: "https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2020-12/R/eclipse-jee-2020-12-R-linux-gtk-x86_64.tar.gz&r=1",
               checksum_algorithm: "sha256",
               checksum_file: "",
             }
