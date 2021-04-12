@@ -15,3 +15,5 @@
         sysctl --system
       become: true
   tags: others
+
+  ### TODO copy vimrc file

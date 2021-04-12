@@ -11,6 +11,11 @@
               checksum_algorithm: "sha256",
               checksum_file: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/latest/sha256sum.txt",
             }
+          - { name: "eclipse",
+              artifact: "https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2021-03/R/eclipse-jee-2021-03-R-linux-gtk-x86_64.tar.gz&r=1",
+              checksum_algorithm: "sha256",
+              checksum_file: "",
+            }
           - { name: "golang",
               artifact: "https://golang.org/dl/go1.16.2.linux-amd64.tar.gz",
               checksum_algorithm: "sha256",
