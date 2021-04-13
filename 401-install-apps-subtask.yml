@@ -9,7 +9,6 @@
 - name: "{{ item.name }} - Check if app artifact already exist"
   stat:
     path: "{{ apps_dir }}/{{ item.name }}/{{ item.artifact | basename }}"
-    checksum_algorithm: "{{ item.checksum_algorithm }}"
   register: app_file_stat
 
 - name: "{{ item.name }} - Download app"
