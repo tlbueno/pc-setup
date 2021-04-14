@@ -7,7 +7,7 @@
         apps_dir: "{{ home_dir }}/apps"
         apps_hash:
           - { name: "crc",
-              artifact: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz"
+              artifact: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.25.0/crc-linux-amd64.tar.xz"
             }
           - { name: "golang",
               artifact: "https://golang.org/dl/go1.16.2.linux-amd64.tar.gz"
