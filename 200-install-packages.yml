@@ -45,6 +45,12 @@
         dnf config-manager --set-enabled google-chrome
       become: true
 
+    - name: Enable bcotton/cherrytree repo
+      shell: |
+        set -o pipefail && \
+        sudo dnf copr enable --assumeyes bcotton/cherrytree
+      become: true
+
     - name: Update package groups
       shell: |
         set -o pipefail && \
@@ -64,6 +70,7 @@
         name:
           - buildah
           - bzip2
+          - cherrytree-future
           - code
           - curl
           - did
