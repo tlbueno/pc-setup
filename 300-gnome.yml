@@ -6,6 +6,25 @@
       set_fact:
         themes_dir: "{{ home_dir }}/.themes"
 
+    - name: Disable Wayland on GDM
+      lineinfile:
+        path: /etc/gdm/custom.conf
+        regexp: '^WaylandEnable=false'
+        insertafter: '^#WaylandEnable=false'
+        line: 'WaylandEnable=false'
+        backup: true
+        #grep -q '^DefaultSession=gnome-xorg.desktop' /etc/gdm/custom.conf && sed -i.bkp -e '/^\[daemon\]/a DefaultSession=gnome-xorg.desktop' /etc/gdm/custom.conf
+      become: true
+
+    - name: Set Xorg as default session
+      lineinfile:
+        path: /etc/gdm/custom.conf
+        regexp: '^DefaultSession=gnome-xorg.desktop'
+        insertafter: '^\[daemon\]'
+        line: 'DefaultSession=gnome-xorg.desktop'
+        backup: true
+      become: true
+
     - name: Create user themes directory
       file:
         path: "{{ themes_dir }}"
