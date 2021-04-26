@@ -162,6 +162,13 @@
         warn: false
       become: true
 
+    - name: Install python packages
+      pip:
+        state: latest
+        name:
+          - yq
+      become: true
+
     - name: Install nodejs packages
       npm:
         state: latest
