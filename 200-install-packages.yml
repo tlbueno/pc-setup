@@ -135,10 +135,10 @@
           - xclip
       become: true
 
-    - name: Install vitualisation package group
+    - name: Install virtualization package group
       shell: |
         set -o pipefail && \
-        dnf group install --assumeyes --with-optional virtualisation
+        dnf group install --assumeyes --with-optional virtualization
       become: true
 
     - name: Install packages (without pgp check)
