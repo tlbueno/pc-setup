@@ -10,7 +10,7 @@
               artifact: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/1.25.0/crc-linux-amd64.tar.xz"
             }
           - { name: "eclipse",
-              artifact: "https://eclipse.c3sl.ufpr.br/technology/epp/downloads/release/2020-12/R/eclipse-dsl-2020-12-R-linux-gtk-x86_64.tar.gz"
+              artifact: "https://eclipse.c3sl.ufpr.br/technology/epp/downloads/release/2020-09/R/eclipse-jee-2020-09-R-linux-gtk-x86_64.tar.gz"
             }
           - { name: "golang",
               artifact: "https://golang.org/dl/go1.16.2.linux-amd64.tar.gz"
