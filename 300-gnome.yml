@@ -121,7 +121,7 @@
     - name: Set display antialiasing as subpixel
       shell: |
         set -o pipefail &&
-        gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba' 
+        gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' 
 
     - name: Set window close button to left
       shell: |
@@ -144,7 +144,7 @@
         set -o pipefail &&
         gsettings set org.gnome.clocks world-clocks "[{'location': <(uint32 2, <('Raleigh', 'KRDU', true, [(0.62605930672100707, -1.3750818938070426)], [(0.62434085553949348, -1.3725027509582006)])>)>}, {'location': <(uint32 2, <('Brno', 'LKTB', true, [(0.857829327355213, 0.291469985083053)], [(0.85870199198121022, 0.29030642643062599)])>)>}, {'location': <(uint32 2, <('Beijing', 'ZBAA', true, [(0.69696814214530467, 2.0295270260429752)], [(0.69689057971334611, 2.0313596217575696)])>)>}]"
 
-    - name: Set world clocks
+    - name: Disable ibus emoji hotkeys
       shell: |
         set -o pipefail &&
         gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"

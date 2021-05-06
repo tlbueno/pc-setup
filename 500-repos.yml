@@ -122,4 +122,5 @@
       when: item.additional_remote_name and item.additional_remote_repo
       with_items:
         - "{{ repos_list }}"
+      ignore_errors: yes
   tags: repos

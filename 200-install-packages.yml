@@ -37,6 +37,7 @@
         dest: "/etc/yum.repos.d/{{ item.repo_filename }}"
       with_items:
         - { repo_file_url: "https://cli.github.com/packages/rpm/gh-cli.repo", repo_filename: "gh-cli.repo" }
+        - { repo_file_url: "https://download.docker.com/linux/fedora/docker-ce.repo", repo_filename: "docker-ce.repo" }
       become: true
 
     - name: Enable google-chrome repo
@@ -72,11 +73,15 @@
           - bzip2
           - cherrytree-future
           - code
+          - containerd.io
           - curl
           - did
+          - docker-ce
+          - docker-ce-cli
           - gcc
           - gh
           - git-crypt
+          - gnome-extensions-app
           - gnome-shell-extension-system-monitor-applet
           - gnome-shell-extension-user-theme
           - gnome-tweaks
@@ -115,7 +120,6 @@
           - pinta
           - pipenv
           - podman
-          - podman-docker
           - python3-ansible-lint
           - python3-devel
           - python3-google-api-client
@@ -175,4 +179,25 @@
         global: yes
         name: junit-merge
       become: true
+  
+    - name: Enable docker service
+      systemd:
+        name: docker
+        enabled: yes
+      become: true
+
+    - name: Enable containerd service
+      systemd:
+        name: containerd
+        enabled: yes
+      become: true
+
+    - name: Add user to docker group
+      user:
+        name: "{{ ansible_user_id }}"
+        groups:
+          docker
+        append: yes
+      become: true
+
   tags: install-packages
