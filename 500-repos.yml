@@ -90,6 +90,10 @@
               additional_remote_name: "", 
               additional_remote_repo: ""
             }
+          - { repo: "git@github.com:tlbueno/hostmon.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
 
     - name: Create dev directory
       file:
