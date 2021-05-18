@@ -66,6 +66,10 @@
               additional_remote_name: "", 
               additional_remote_repo: ""
             }
+          - { repo: "git@github.com:rh-messaging/activemq-artemis-operator.git", 
+              additional_remote_name: "", 
+              additional_remote_repo: ""
+            }
           - { repo: "git@github.com:rh-messaging/artemis-prometheus-metrics-plugin.git", 
               additional_remote_name: "", 
               additional_remote_repo: ""
